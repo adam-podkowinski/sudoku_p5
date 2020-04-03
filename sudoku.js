@@ -8,20 +8,34 @@ function getPosition(i, j, size) {
 class Sudoku {
     constructor( /* How hard is the game - higher, it's harder, lower - it's easier */ difFraction) {
         this.blocks = new Array(res / 3);
+        this.spots = new Array(res);
+
         //* CREATE 2d array
         for (let i = 0; i < this.blocks.length; i++) {
             this.blocks[i] = new Array(res / 3);
-        }
-        for (let i = 0; i < this.blocks.length; i++) {
             for (let j = 0; j < this.blocks[i].length; j++) {
                 // * i = 0 j = 0 starting i and j = 0 (upper left corner)
-                //* i = 2; i = 1 starting i = 6 starting j = 3 (middle right block, so it start 4th column and 7th row)
+                //* i = 2; i = 1 starting i = 6 starting j = 3 (middle right block, so it starts at 4th column and 7th row)
                 this.blocks[i][j] = new Block(i * 3, j * 3);
+            }
+        }
+
+        for (let k = 0; k < this.blocks.length; k++) {
+            for (let l = 0; l < this.blocks[k].length; l++) {
+                const block = this.blocks[k][l];
+                for (let i = 0; i < block.spots.length; i++) {
+                    this.spots[i] = new Array(res);
+                    for (let j = 0; j < block.spots.length; j++) {
+                        print(this.spots[i + block.startI][j + block.startJ]);
+                        this.spots[i + block.startI][j + block.startJ] = this.blocks[k][l].spots[i][j];
+                    }
+                }
             }
         }
         // *
 
         this.difFraction = difFraction;
+        this.startFill();
     }
 
     show() {
@@ -37,15 +51,18 @@ class Sudoku {
         //!
         for (let i = 0; i < this.blocks.length; i++) {
             for (let j = 0; j < this.blocks.length; j++) {
+                const block = this.blocks[i][j];
                 //!
                 //Iterate over all spots in one block and try add one spot
-                for (let k = 0; k < this.blocks[i][j].spots.length; k++) {
-                    for (let l = 0; l < this.blocks[i][j].spots.length; l++) {
-                        const block = this.blocks[i][j];
-                        const iPos = k + block.startI;
-                        const jPos = l + block.startJ;
+                for (let k = 0; k < block.spots.length; k++) {
+                    for (let l = 0; l < block.spots[i].length; l++) {
+                        const spot = block.spots[k][l];
 
-                        block.addSpot(new Spot(iPos, jPos, this.difFraction));
+                        if (random(1) > this.difFraction) {
+                            do {
+                                spot.val = random(0, 9);
+                            } while (!this.checkSpot(spot))
+                        }
                     }
                 }
                 //!
@@ -54,7 +71,12 @@ class Sudoku {
         //!
     }
 
-    checkPuttingSpot(spot) {
+    checkSpot(spot) {
+        const blockI = floor(spot.i / 3);
+        const blockJ = floor(spot.j / 3);
+        const block = this.blocks[blockI][blockJ];
 
+        // block.checkSpot(spot);
     }
+
 }

@@ -1,20 +1,11 @@
 class Spot {
-    constructor(i, j, difFraction) {
+    constructor(i, j, value, blocked) {
         this.i = i;
         this.j = j;
         this.pos = getPosition(i, j, spotSize);
-
-        this.setValues(difFraction);
-    }
-
-    setValues(difFraction) {
-        if (random(1) > difFraction) {
-            this.empty = true;
-            this.val = -1;
-        } else {
-            this.empty = false;
-            this.val = floor(random(0, 9));
-        }
+        this.blocked = blocked;
+        this.val = value;
+        this.empty = this.val < 0;
     }
 
     show() {

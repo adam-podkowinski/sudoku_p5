@@ -1,12 +1,16 @@
 class Block {
     constructor(startI, startJ) {
+        this.startI = startI;
+        this.startJ = startJ;
+
         this.spots = new Array(3);
         for (let i = 0; i < this.spots.length; i++) {
             this.spots[i] = new Array(3);
+            for (let j = 0; j < this.spots[i].length; j++) {
+                this.spots[i][j] = new Spot(i + this.startI, j + this.startJ, -1, false);
+            }
         }
 
-        this.startI = startI;
-        this.startJ = startJ;
         this.startPos = getPosition(startI, startJ, spotSize);
     }
 
