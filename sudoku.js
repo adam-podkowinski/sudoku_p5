@@ -20,12 +20,15 @@ class Sudoku {
             }
         }
 
+        //* CREATE 2d array
+        for (let i = 0; i < this.spots.length; i++) {
+            this.spots[i] = new Array(res);
+        }
+
         for (let k = 0; k < this.blocks.length; k++) {
             for (let l = 0; l < this.blocks[k].length; l++) {
                 const block = this.blocks[k][l];
                 for (let i = 0; i < block.spots.length; i++) {
-                    //* CREATE 2d array
-                    this.spots[i + block.startI] = new Array(res);
                     for (let j = 0; j < block.spots[i].length; j++) {
                         this.spots[i + block.startI][j + block.startJ] = block.spots[i][j];
                     }
@@ -33,9 +36,7 @@ class Sudoku {
             }
         }
 
-        console.table(this.spots)
-
-        this.difFraction = difFraction;
+        this.difFactor = difFraction;
         this.startFill();
     }
 
@@ -48,25 +49,11 @@ class Sudoku {
     }
 
     startFill() {
-        // Iterate over blocks => if res == 9, i < 3, j < 3 and so on
         //!
-        for (let i = 0; i < this.blocks.length; i++) {
-            for (let j = 0; j < this.blocks.length; j++) {
-                const block = this.blocks[i][j];
-                //!
-                //Iterate over all spots in one block and try add one spot
-                for (let k = 0; k < block.spots.length; k++) {
-                    for (let l = 0; l < block.spots[i].length; l++) {
-                        const spot = block.spots[k][l];
+        let stack = [];
 
-                        if (random(1) > this.difFraction) {
-                            do {
-                                spot.val = random(0, 9);
-                            } while (!this.checkSpot(spot))
-                        }
-                    }
-                }
-                //!
+        for (let i = 0; i < this.spots.length; i++) {
+            for (let j = 0; j < this.spots[i].length; j++) {
             }
         }
         //!
@@ -76,8 +63,22 @@ class Sudoku {
         const blockI = floor(spot.i / 3);
         const blockJ = floor(spot.j / 3);
         const block = this.blocks[blockI][blockJ];
+
+        return this.checkHorizontally(spot) && this.checkVertically(spot);
+    }
+
+    checkHorizontally(spot) {
+        for (let i = 0; i < this.spots.length; i++) {
+            if (this.spots[spot.i][i].val == spot.val) return false;
+        }
         return true;
-        // block.checkSpot(spot);
+    }
+
+    checkVertically(spot) {
+        for (let i = 0; i < this.spots.length; i++) {
+            if (this.spots[i][spot.j].val == spot.val) return false;
+        }
+        return true;
     }
 
 }
