@@ -10,8 +10,8 @@ class Sudoku {
         this.blocks = new Array(res / 3);
         this.spots = new Array(res);
 
-        //* CREATE 2d array
         for (let i = 0; i < this.blocks.length; i++) {
+            //* CREATE 2d array
             this.blocks[i] = new Array(res / 3);
             for (let j = 0; j < this.blocks[i].length; j++) {
                 // * i = 0 j = 0 starting i and j = 0 (upper left corner)
@@ -24,15 +24,16 @@ class Sudoku {
             for (let l = 0; l < this.blocks[k].length; l++) {
                 const block = this.blocks[k][l];
                 for (let i = 0; i < block.spots.length; i++) {
-                    this.spots[i] = new Array(res);
-                    for (let j = 0; j < block.spots.length; j++) {
-                        print(this.spots[i + block.startI][j + block.startJ]);
-                        this.spots[i + block.startI][j + block.startJ] = this.blocks[k][l].spots[i][j];
+                    //* CREATE 2d array
+                    this.spots[i + block.startI] = new Array(res);
+                    for (let j = 0; j < block.spots[i].length; j++) {
+                        this.spots[i + block.startI][j + block.startJ] = block.spots[i][j];
                     }
                 }
             }
         }
-        // *
+
+        console.table(this.spots)
 
         this.difFraction = difFraction;
         this.startFill();
@@ -75,7 +76,7 @@ class Sudoku {
         const blockI = floor(spot.i / 3);
         const blockJ = floor(spot.j / 3);
         const block = this.blocks[blockI][blockJ];
-
+        return true;
         // block.checkSpot(spot);
     }
 

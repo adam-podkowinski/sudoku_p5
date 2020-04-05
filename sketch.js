@@ -13,7 +13,6 @@ function setup() {
     }
     borderWidth = 50 / res;
     sudoku = new Sudoku(.5);
-    sudoku.startFill();
 }
 
 function draw() {
