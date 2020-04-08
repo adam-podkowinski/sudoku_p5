@@ -30,7 +30,8 @@ class Sudoku {
                 const block = this.blocks[k][l];
                 for (let i = 0; i < block.spots.length; i++) {
                     for (let j = 0; j < block.spots[i].length; j++) {
-                        this.spots[i + block.startI][j + block.startJ] = block.spots[i][j];
+                        const spot = block.spots[i][j];
+                        this.spots[spot.i][spot.j] = block.spots[i][j];
                     }
                 }
             }
@@ -49,34 +50,67 @@ class Sudoku {
     }
 
     startFill() {
-        //!
         let stack = [];
+        let isRight = true;
+        let iIndex = 0;
+        let jIndex = 0;
 
-        for (let i = 0; i < this.spots.length; i++) {
-            for (let j = 0; j < this.spots[i].length; j++) {
+
+        for (let i = 0; i < 9; i++) {
+            let currentSpot = this.spots[iIndex][jIndex];
+            stack.push(currentSpot);
+            currentSpot.val = floor(random(0, 9));
+            if (!this.checkSpot(currentSpot)) {
+                for (let i = 0; i < 8; i++) {
+                    if (currentSpot.val >= 9) currentSpot.val = 0;
+                    else currentSpot.val++;
+                    if (!this.checkSpot(currentSpot)) {
+                        continue;
+                    } else {
+                        isRight = true;
+                        break;
+                    }
+                }
+                if (!isRight) {
+                    if (stack.length > 0) {
+                        currentSpot.val = -1;
+                        currentSpot.empty = true;
+                        currentSpot.blocked = false;
+                        // currentSpot = stack.pop();
+                        iIndex--;
+                    }
+                }
+            } else isRight = true;
+            if (isRight) {
+                currentSpot.empty = false;
+                currentSpot.blocked = true;
+                iIndex++;
             }
         }
-        //!
     }
 
     checkSpot(spot) {
         const blockI = floor(spot.i / 3);
         const blockJ = floor(spot.j / 3);
         const block = this.blocks[blockI][blockJ];
-
-        return this.checkHorizontally(spot) && this.checkVertically(spot);
+        const expression = this.checkHorizontally(spot) && this.checkVertically(spot);
+        return expression;
     }
 
     checkHorizontally(spot) {
         for (let i = 0; i < this.spots.length; i++) {
-            if (this.spots[spot.i][i].val == spot.val) return false;
+            if (this.spots[spot.i][i].val == spot.val) {
+                return false;
+            }
         }
         return true;
     }
 
     checkVertically(spot) {
         for (let i = 0; i < this.spots.length; i++) {
-            if (this.spots[i][spot.j].val == spot.val) return false;
+            if (this.spots[i][spot.j].val == spot.val) {
+                return false;
+            }
         }
         return true;
     }

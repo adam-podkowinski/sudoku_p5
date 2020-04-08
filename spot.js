@@ -20,4 +20,10 @@ class Spot {
         text(this.empty ? '' : this.val, spotSize / 2, spotSize / 2);
         pop();
     }
+
+    setVal(val) {
+        this.val = val;
+
+        if (this.empty) this.empty = false;
+    }
 }
