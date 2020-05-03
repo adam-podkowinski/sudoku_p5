@@ -3,6 +3,7 @@ let spotSize;
 let sudoku;
 let borderWidth;
 
+
 function setup() {
 	createCanvas(900, 900);
 	if (res % 3 == 0) {
@@ -14,6 +15,7 @@ function setup() {
 	borderWidth = 50 / res;
 	sudoku = new Sudoku(0.5);
 }
+
 
 function draw() {
 	background(255);
